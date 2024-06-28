@@ -2,13 +2,13 @@
 import re
 
 from src.response_parsing.pars import *
-from src.userValidator import validate_password
+from src.userValidator import validate_password, validate_email
 
+emails = ['reboie@iewn.com', 'wnifw@venv', 'wufebiwnfio', 'finbfo@.ifnie']
 def main():
-    for user in getUser(100):
-        password = user.login.password
-        print(password)
-        print(validate_password(password))
+    for email in emails:
+        #email = user.email
+        print(email, validate_email(email))
         #print(bool(re.search(r"[A-Z]", r"riobnrlTk")))
 
 
