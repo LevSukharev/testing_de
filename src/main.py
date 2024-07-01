@@ -16,16 +16,6 @@ def main():
     print(validator.password, validator.validatePassword())'''
 
     user = getUser(1)
-    db = Database(host="127.0.0.1", dbname="de_projects", user="admin", password="password", port="8888")
-    db.connect()
-
-    #schema = DatabaseSchema(db)
-    #schema.createTable()
-
-    user_repo = UserRepository(db)
-    user_repo.create_user(user[0])
-
-    db.closeConnection()
 
 
 
