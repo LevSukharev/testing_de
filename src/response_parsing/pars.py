@@ -1,7 +1,6 @@
 import logging
 import msgspec
 import httpx
-#from pydantic import BaseModel, ValidationError
 from src.response_parsing.models.user import *
 
 def getUser(count: int = 1):
@@ -17,7 +16,7 @@ def getUser(count: int = 1):
             resultsDicts: list[dict] = response.json()['results']
         # Список объектов класса User
             usersData: list[User] = [User(**user) for user in resultsDicts]
-            return usersData
+            return usersData[0]
         except (TypeError, ValueError, KeyError) as e:
             print(e)
             return None

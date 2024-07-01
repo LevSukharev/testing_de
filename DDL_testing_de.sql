@@ -13,6 +13,7 @@ create table if not exists users(
 create table if not exists cities(
 	city_id serial primary key,
 	city varchar(50) not null,
+	state varchar(50) not null,
 	country varchar(50) not null,
 	timezone_offset varchar(20) not null,
 	timezone_description varchar(100),
