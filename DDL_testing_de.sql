@@ -6,8 +6,8 @@ create table if not exists users(
 	name_last varchar(50),
 	age int,
 	nat varchar(50),
-	created_dttm timestamp default current_timestamp,
-	updated_dttm timestamp default current_timestamp
+	created_dttm timestamptz default current_timestamp,
+	updated_dttm timestamptz default current_timestamp
 );
 
 create table if not exists cities(
@@ -17,8 +17,8 @@ create table if not exists cities(
 	country varchar(50) not null,
 	timezone_offset varchar(20) not null,
 	timezone_description varchar(100),
-	created_dttm timestamp default current_timestamp,
-	updated_dttm timestamp default current_timestamp
+	created_dttm timestamptz default current_timestamp,
+	updated_dttm timestamptz default current_timestamp
 );
 
 create table if not exists locations(
@@ -29,26 +29,26 @@ create table if not exists locations(
 	postcode varchar(50),
 	latitude decimal(9,6) not null,
 	longtitude decimal(9,6) not null,
-	created_dttm timestamp default current_timestamp,
-	updated_dttm timestamp default current_timestamp,
+	created_dttm timestamptz default current_timestamp,
+	updated_dttm timestamptz default current_timestamp,
 	foreign key(user_id) references users(user_id) on delete cascade on update cascade,
 	foreign key(city_id) references cities(city_id) on delete cascade on update cascade
 );
 
-create table if not exists contact_deta(
+create table if not exists contact_details(
 	user_id serial primary key,
 	phone varchar(20),
 	cell varchar(50),
-	created_dttm timestamp default current_timestamp,
-	updated_dttm timestamp default current_timestamp,
+	created_dttm timestamptz default current_timestamp,
+	updated_dttm timestamptz default current_timestamp,
 	foreign key(user_id) references users(user_id) on delete cascade on update cascade
 );
 
 create table if not exists media_data(
 	user_id serial primary key,
 	picture varchar(100),
-	created_dttm timestamp default current_timestamp,
-	updated_dttm timestamp default current_timestamp,
+	created_dttm timestamptz default current_timestamp,
+	updated_dttm timestamptz default current_timestamp,
 	foreign key(user_id) references users(user_id) on delete cascade on update cascade
 );
 
@@ -59,8 +59,9 @@ create table if not exists registration_data(
 	password varchar(255) not null,
 	password_md5 varchar(100) not null,
 	password_validation bool,
-	created_dttm timestamp default current_timestamp,
-	updated_dttm timestamp default current_timestamp,
+	email_validation bool,
+	created_dttm timestamptz default current_timestamp,
+	updated_dttm timestamptz default current_timestamp,
 	foreign key(user_id) references users(user_id) on delete cascade on update cascade
 );
 
@@ -84,8 +85,8 @@ create trigger before_update_locations
 before update on locations
 for each row execute function update_updated_column();
 
-create trigger before_update_contact_deta
-before update on contact_deta
+create trigger before_update_contact_details
+before update on contact_details
 for each row execute function update_updated_column();
 
 create trigger before_update_media_data

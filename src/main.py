@@ -1,21 +1,34 @@
 # -*- coding: utf-8 -*-
 import re
-from src.response_parsing.pars import *
-from src.CRUDs.ddl import *
+from src.interfaceAPI.obtaining import getUser
+from src.interfaceAPI.model import User
+from connectionDB import Connector
+from connectionDB import InsertData
+from validators.validation import validateEmail
 
 emails = ['reboie@iewn.com', 'wnifw@venv', 'wufebiwnfio', 'finbfo@.ifnie', 'levacloud@mail.ru']
 def main():
 
-    '''for email in emails:
-        validator = UserValidator(email = email, password='ejirfbui')
-        #email = user.email
-        #print(email, validator.validateEmail())
-        #print(bool(re.search(r"[A-Z]", r"riobnrlTk")))
 
-    validator = UserValidator(password=getUser(1)[0].login.password)
-    print(validator.password, validator.validatePassword())'''
 
-    user = getUser(1)
+    users = getUser(1)
+    # print(user, sep='\n')
+
+    con = Connector(host="127.0.0.1",
+                  dbname="de_projects",
+                  user="admin",
+                  password="password",
+                  port=8888,
+                    b=False)
+
+    id = InsertData(con)
+    id.insert_data(users[0])
+    #
+    # for user in users:
+    #     if user.email_validation:
+    #         urepo.load_user(user)
+    #     print(user.login.password_validation, user.email_validation, sep= '<-password\temail->')
+    #
 
 
 

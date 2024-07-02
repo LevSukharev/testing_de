@@ -1,5 +1,5 @@
 import re
-
+# from pydantic import validate_email
 
 def validatePassword(password: str) -> bool:
     return (bool(re.search(r"[A-Z]", password))

@@ -1,7 +1,7 @@
 import psycopg2
 from psycopg2.extras import RealDictCursor
 from src.response_parsing.models.user import User
-from src.userValidator import UserValidator
+
 
 
 

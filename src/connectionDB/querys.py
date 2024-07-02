@@ -1,4 +1,4 @@
-from src.response_parsing.models.user import User
+from src.interfaceAPI.model import User
 
 
 def execute_city(user: User):
@@ -84,23 +84,3 @@ def execute_registration_data_query(user: User, user_id: int):
 
     return insert_registration_query, registration_params
 
-
-# def getRow(f):
-#     @wraps(f)
-#     def wrapper(*args, **kwargs):
-#         cursor = f(*args, **kwargs)
-#         if cursor.description:
-#             return cursor.fetchone()[0]
-#         else:
-#             return cursor.rowcount
-#     return wrapper()
-#
-# def pushRow(f):
-#     @wraps(f)
-#     def wrapper(*args, **kwargs):
-#         cursor = f(*args, **kwargs)
-#         if cursor.description:
-#             return cursor.fetall()
-#         else:
-#             return cursor.rowcount
-#         return wrapper

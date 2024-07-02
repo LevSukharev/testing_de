@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field, validator
 from typing import Union
-from src.userValidator import *
+from src.validators.validation import validateEmail, validatePassword
+
 class Name(BaseModel):
     name_title: str = Field(alias='title')
     name_first: str = Field(alias='first')
@@ -37,8 +38,6 @@ class Login(BaseModel):
     sha1: str
     sha256: str
 
-
-
     @validator('password_validation', always=True)
     def validate_password(cls, v, values):
         password = values.get('password')
@@ -68,10 +67,6 @@ class User(BaseModel):
     picture: Picture
     nat: str
     email_validation: bool = False
-
-    '''@staticmethod
-    def validateEmail(email: str) -> bool:
-        return bool(re.search(r"\S{1,}@[a-z]{2,}.[a-z]{2,}", email))'''
 
     @validator('email_validation', always=True)
     def validate_email(cls, v, values):
