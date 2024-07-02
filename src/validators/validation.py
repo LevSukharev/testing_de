@@ -1,11 +1,12 @@
-import re
-# from pydantic import validate_email
+from validate_email import validate_email
+from password_validator import PasswordValidator
 
-def validatePassword(password: str) -> bool:
-    return (bool(re.search(r"[A-Z]", password))
-            and bool(re.search(r"[a-z]", password))
-            and bool(re.search(r"\d", password))
-            and bool(re.search(r"[!\"#$%&'()*+,\- ./:;<=>?@\[\]^_`{|}~]", password)))
 
-def validateEmail(email: str) -> bool:
-    return bool(re.search(r"\S{1,}@[a-z]{2,}.[a-z]{2,}", email))
+def password_validate(password: str) -> bool:
+    schema = PasswordValidator()
+    schema.has().uppercase().has().lowercase().has().digits().has().no().spaces().has().symbols()
+    return schema.validate(password)
+
+
+def email_validate(email: str) -> bool:
+    return validate_email(email)

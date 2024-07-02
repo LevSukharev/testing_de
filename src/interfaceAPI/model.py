@@ -1,6 +1,7 @@
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, validator, field_validator
 from typing import Union
-from src.validators.validation import validateEmail, validatePassword
+from src.validators.validation import password_validate, email_validate
+
 
 class Name(BaseModel):
     name_title: str = Field(alias='title')
@@ -38,12 +39,13 @@ class Login(BaseModel):
     sha1: str
     sha256: str
 
-    @validator('password_validation', always=True)
-    def validate_password(cls, v, values):
-        password = values.get('password')
-        if password is None:
-            raise ValueError('Password is required')
-        return validatePassword(password)
+    # @field_validator('password')
+    # def set_password_validation(cls, v, values):
+    #     if password_validate(v):
+    #         values['password_validation'] = True
+    #     else:
+    #         values['password_validation'] = False
+    #     return v
 
 
 class Dob(BaseModel):
@@ -68,9 +70,10 @@ class User(BaseModel):
     nat: str
     email_validation: bool = False
 
-    @validator('email_validation', always=True)
-    def validate_email(cls, v, values):
-        email = values.get('email')
-        if email is None:
-            raise ValueError('email is required')
-        return validateEmail(email)
+    # @field_validator('email')
+    # def set_email_validation(cls, v, values):
+    #     if email_validate(v):
+    #         values['email_validation'] = True
+    #     else:
+    #         values['email_validation'] = False
+    #     return v
