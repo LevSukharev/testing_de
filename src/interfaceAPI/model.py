@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, validator, field_validator
+from pydantic import BaseModel, Field, validator, field_validator, model_validator
 from typing import Union
 from src.validators.validation import password_validate, email_validate
 
@@ -39,23 +39,28 @@ class Login(BaseModel):
     sha1: str
     sha256: str
 
-    # @field_validator('password')
-    # def set_password_validation(cls, v, values):
-    #     if password_validate(v):
-    #         values['password_validation'] = True
-    #     else:
-    #         values['password_validation'] = False
-    #     return v
+    @field_validator('password')
+    def check_password(cls, v):
+        if not v:
+            raise ValueError('Password required')
+        return v
+
+    @model_validator(mode='after')
+    def set_password_validation(cls, values):
+        values.password_validation = password_validate(values.password)
+        return values
 
 
 class Dob(BaseModel):
     date: str
     age: int
 
+
 class Picture(BaseModel):
     large: str
     medium: str
     thumbnail: str
+
 
 class User(BaseModel):
     gender: str
@@ -70,10 +75,13 @@ class User(BaseModel):
     nat: str
     email_validation: bool = False
 
-    # @field_validator('email')
-    # def set_email_validation(cls, v, values):
-    #     if email_validate(v):
-    #         values['email_validation'] = True
-    #     else:
-    #         values['email_validation'] = False
-    #     return v
+    @field_validator('email')
+    def check_email(cls, v):
+        if not v:
+            raise ValueError('Email required')
+        return v
+
+    @model_validator(mode='after')
+    def set_email_validation(cls, values):
+        values.email_validation = email_validate(values.email)
+        return values

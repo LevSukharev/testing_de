@@ -10,3 +10,4 @@ def password_validate(password: str) -> bool:
 
 def email_validate(email: str) -> bool:
     return validate_email(email)
+
