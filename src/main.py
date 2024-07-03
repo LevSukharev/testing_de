@@ -4,6 +4,7 @@ from interfaceAPI import get_user
 from connectionDB import Connector, InsertData, SelectData
 from dotenv import load_dotenv
 from loguru import logger
+from settings import settings
 
 logger.add("full.log", format="{time} {level} {message}", level='DEBUG')
 
@@ -17,13 +18,13 @@ def main():
     except Exception as e:
         logger.error(e)
 
-    con = Connector(host=os.getenv("host"),
-                    dbname=os.getenv("dbname"),
-                    user=os.getenv("user"),
-                    password=os.getenv("password"),
-                    port=os.getenv("port"))
+    con = Connector(host=settings.host,
+                    dbname=settings.dbname,
+                    user=settings.user,
+                    password=settings.password,
+                    port=settings.port)
 
-    users = get_user(count=4, url_api=os.getenv("url_api"))
+    users = get_user(count=4, url_api=settings.url_api)
 
     idata = InsertData(con)
 

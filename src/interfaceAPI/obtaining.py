@@ -15,9 +15,10 @@ except Exception as e:
     logger.error(e)
 
 
-def get_user(count: int = 1, url_api: str = os.getenv("url_api")):
+def get_user(count: int = 1, url_api: str = os.getenv("URL_API")):
 
-    url_api = f'{url_api}{count}'
+    url_api = f"{url_api}{count}"
+
 
     response: httpx.Response = httpx.get(url_api)
 
