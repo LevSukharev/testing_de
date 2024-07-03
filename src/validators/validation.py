@@ -4,7 +4,7 @@ from password_validator import PasswordValidator
 
 def password_validate(password: str) -> bool:
     schema = PasswordValidator()
-    schema.has().uppercase().has().lowercase().has().digits().has().no().spaces().has().symbols()
+    schema.has().uppercase().has().lowercase().has().digits().has().spaces().has().symbols()
     return schema.validate(password)
 
 

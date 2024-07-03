@@ -1,5 +1,5 @@
-# __all__ = (
-#     'getUser'
-# )
-# from src.interfaceAPI.obtaining import getUser
-#
+__all__ = (
+    'get_user'
+)
+from src.interfaceAPI.obtaining import get_user
+

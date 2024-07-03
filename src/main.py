@@ -1,29 +1,43 @@
 # -*- coding: utf-8 -*-
-import re
-from src.interfaceAPI.obtaining import getUser
-from src.interfaceAPI.model import User
-from connectionDB import Connector, InsertData
-from src.validators.validation import password_validate
+import os
+from interfaceAPI import get_user
+from connectionDB import Connector, InsertData, SelectData
+from dotenv import load_dotenv
+from loguru import logger
+
+logger.add("full.log", format="{time} {level} {message}", level='DEBUG')
 
 
 def main():
 
-    #users = getUser(10)
-    user = getUser(1)
-    print(user)
+    try:
+        load_dotenv()
 
-    con = Connector(host="127.0.0.1",
-                  dbname="de_projects",
-                  user="admin",
-                  password="password",
-                  port=8888,
-                    b=False)
+        logger.debug(f'[{__file__}] Env was loaded')
+    except Exception as e:
+        logger.error(e)
 
-    id = InsertData(con)
-    #id.insert_data(users[0])
+    con = Connector(host=os.getenv("host"),
+                    dbname=os.getenv("dbname"),
+                    user=os.getenv("user"),
+                    password=os.getenv("password"),
+                    port=os.getenv("port"))
 
+    users = get_user(count=4, url_api=os.getenv("url_api"))
 
+    idata = InsertData(con)
 
+    for user in users:
+        idata.insert_data(user=user)
+
+    input('Select users?')
+
+    sdata = SelectData(con)
+
+    users = sdata.select_data(valid_password=False, valid_email=True, limit=2)
+
+    for user in users:
+        print(user)
 
 
 if __name__ == '__main__':
