@@ -1,45 +1,84 @@
 # -*- coding: utf-8 -*-
-import os
 from interfaceAPI import get_user
 from connectionDB import Connector, InsertData, SelectData
-from dotenv import load_dotenv
-from loguru import logger
+import logging
+import os
 from settings import settings
 
-logger.add("full.log", format="{time} {level} {message}", level='DEBUG')
+
+log_dir = os.path.join(os.path.dirname(os.getcwd()), "logs")
+
+log_file = os.path.join(log_dir, "log.log")
+
+logging.basicConfig(
+    filename=log_file,
+    filemode="w",
+    encoding="utf-8",
+    level=(logging.WARNING, logging.DEBUG)[settings.debug],
+    format="%(asctime)s (%(module)s): [%(levelname)s] - %(message)s",
+    datefmt="%d/%m/%Y %H:%M:%S",
+)
+
+logger = logging.getLogger()
 
 
 def main():
 
     try:
-        load_dotenv()
+        con = Connector(
+            host=settings.host,
+            dbname=settings.dbname,
+            user=settings.user,
+            password=settings.password,
+            port=settings.port,
+        )
 
-        logger.debug(f'[{__file__}] Env was loaded')
+        logger.info(f"Successfully connection {con.connector}")
+
     except Exception as e:
-        logger.error(e)
+        con = None
+        logger.error(f"In db connection {e}")
 
-    con = Connector(host=settings.host,
-                    dbname=settings.dbname,
-                    user=settings.user,
-                    password=settings.password,
-                    port=settings.port)
+    try:
+        users = get_user(url_api=settings.url_api)
 
-    users = get_user(count=4, url_api=settings.url_api)
+        logger.info("Successfully obtaining")
 
-    idata = InsertData(con)
+    except Exception as e:
+        users = None
+        logger.error(f"In obtain user {e}")
 
-    for user in users:
-        idata.insert_data(user=user)
+    try:
+        idata = InsertData(con)
 
-    input('Select users?')
+    except Exception as e:
+        logger.error(f"In creation insert object {e}")
+        idata = None
 
-    sdata = SelectData(con)
+    try:
+        for user in users:
+            idata.insert_data(user=user)
 
-    users = sdata.select_data(valid_password=False, valid_email=True, limit=2)
+    except Exception as e:
+        logger.error(f"In insertion {e}")
+
+    try:
+        sdata = SelectData(con)
+
+    except Exception as e:
+        logger.error(f"In creation select object {e}")
+        sdata = None
+
+    try:
+        users = sdata.select_data(valid_password=False, valid_email=True)
+
+    except Exception as e:
+        logger.error(f"In selection {e}")
+        users = tuple()
 
     for user in users:
         print(user)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

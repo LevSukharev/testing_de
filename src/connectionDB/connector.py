@@ -1,7 +1,4 @@
 import psycopg2
-from loguru import logger
-
-logger.add("full.log", format="{time} {level} {message}", level='DEBUG')
 
 
 class Connector:
@@ -24,16 +21,13 @@ class Connector:
                 user=self.user,
                 password=self.password,
                 host=self.host,
-                port=self.port
+                port=self.port,
             )
-
-            logger.debug(f'Connector object {connector} successfully created')
 
             return connector
 
-        except Exception as e:
-            logger.error(f'[ERROR] connection error: {e}')
-
+        except Exception:
+            pass
 
     def execute_query(self, query: str, params: tuple = None) -> any:
         with self.connector.cursor() as cursor:

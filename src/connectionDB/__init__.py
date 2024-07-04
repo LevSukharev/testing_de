@@ -1,10 +1,9 @@
 __all__ = (
-    'Connector',
-    'InsertData',
-    'SelectData',
-
+    "Connector",
+    "InsertData",
+    "SelectData",
 )
 
-from src.connectionDB.connector import Connector
-from src.connectionDB.operations import InsertData
-from src.connectionDB.operations import SelectData
+from connector import Connector
+from operations import InsertData
+from operations import SelectData

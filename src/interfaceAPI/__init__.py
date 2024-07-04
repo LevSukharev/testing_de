@@ -1,5 +1,5 @@
 __all__ = (
-    'get_user'
+    "get_user",
 )
-from src.interfaceAPI.obtaining import get_user
 
+from obtaining import get_user
